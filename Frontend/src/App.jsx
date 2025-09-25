@@ -1,18 +1,15 @@
 import "./App.css";
 import React from "react";
-import { BrowserRouter as Router, Route, Routes, BrowserRouter } from "react-router-dom";
-// import Home from "./pages/Home";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
-import Home from "./pages/Home"
+import Products from "./pages/Products";
+import ProductDetail from "./pages/ProductDetail";
+import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
 
-function privateRoute({children}){
-    const token = localStorage.getItem("token");
-    if(!token){
-        return <Login />
-    }
-    return children;
-}
+
 const App = () => {
     return (
        <BrowserRouter>
@@ -20,11 +17,11 @@ const App = () => {
                <Route path="/" element={<Home />} />
                <Route path="/login" element={<Login />} />
                <Route path="/signup" element={<SignUp />} />
-               <Route path="/home" element={
-                   <privateRoute>
-                       <Home />
-                   </privateRoute>
-               } />
+               <Route path="/register" element={<SignUp />} />
+               <Route path="/products" element={<Products />} />
+               <Route path="/products/:id" element={<ProductDetail />} />
+               <Route path="/cart" element={<Cart />} />
+               <Route path="/checkout" element={<Checkout />} />
            </Routes>
        </BrowserRouter>
     )

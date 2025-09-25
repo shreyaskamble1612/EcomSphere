@@ -2,11 +2,15 @@ import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ShoppingCart, User, Search } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
+import { useCart } from "../context/CartContext";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 import React from "react";
 
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
+  const { itemsCount } = useCart();
   const navigate = useNavigate();
 
   return (
@@ -18,7 +22,7 @@ const Navbar = () => {
           className="text-2xl font-extrabold cursor-pointer"
           onClick={() => navigate("/")}
         >
-          ShopSmart
+          EcomSphere
         </h1>
 
         {/* Search Bar */}
@@ -51,8 +55,14 @@ const Navbar = () => {
           )}
 
           {/* 🛒 Cart is always visible */}
-          <Button className="flex items-center gap-1 bg-transparent hover:text-yellow-300">
-            <ShoppingCart className="w-5 h-5" /> <Link to="/cart">Cart</Link>
+          <Button className="flex items-center gap-1 bg-transparent hover:text-yellow-300 relative">
+            <ShoppingCart className="w-5 h-5" /> 
+            <Link to="/cart">Cart</Link>
+            {itemsCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                {itemsCount}
+              </span>
+            )}
           </Button>
         </div>
       </div>

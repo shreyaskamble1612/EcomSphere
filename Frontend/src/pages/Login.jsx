@@ -15,8 +15,8 @@ export default function Login() {
     try {
       const res = await axios.post("http://localhost:5000/api/auth/login", form);
       localStorage.setItem("token", res.data.token);
-      alert("Welcome ");
-      navigate("/home");
+      alert("Welcome! You are now logged in.");
+      navigate("/");
     } catch (err) {
       alert(err.response?.data?.message || "Error logging in");
       console.log(err)
