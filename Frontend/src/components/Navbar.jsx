@@ -1,39 +1,63 @@
-import { Link } from "react-router-dom";
-import { ShoppingCart, User } from "lucide-react";
-import { Button } from "./ui/button";
+import { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { ShoppingCart, User, Search } from "lucide-react";
+import { AuthContext } from "../context/AuthContext";
+import React from "react";
 
-function Navbar() {
+
+const Navbar = () => {
+  const { user, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   return (
-    <nav className="bg-white shadow-md sticky top-0 z-50">
-      <div className="container mx-auto flex justify-between items-center py-4 px-6">
+    <header className="bg-blue-600 text-white sticky top-0 z-50 shadow-md">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between px-4 py-3 gap-3">
+        
         {/* Logo */}
-        <Link to="/" className="text-2xl font-bold text-blue-600">
-          AivoraAI
-        </Link>
+        <h1
+          className="text-2xl font-extrabold cursor-pointer"
+          onClick={() => navigate("/")}
+        >
+          ShopSmart
+        </h1>
 
-        {/* Links */}
-        <div className="hidden md:flex space-x-6 font-medium">
-          <Link to="/" className="hover:text-blue-600">Home</Link>
-          <Link to="/orders" className="hover:text-blue-600">Orders</Link>
-          <Link to="/admin" className="hover:text-blue-600">Admin</Link>
+        {/* Search Bar */}
+        <div className="flex flex-1 w-full md:w-auto mx-0 md:mx-6">
+          <Input type="text" placeholder="Search for products..." />
+          <Button className="bg-yellow-400 text-black ml-2 hover:bg-yellow-500">
+            <Search className="w-5 h-5 inline" />
+          </Button>
         </div>
 
-        {/* Right Actions */}
-        <div className="flex items-center space-x-4">
-          <Link to="/cart">
-            <Button variant="outline" size="icon">
-              <ShoppingCart className="h-5 w-5" />
+        {/* Right Side: Auth + Cart */}
+        <div className="flex items-center space-x-6 text-sm">
+          {user ? (
+            <>
+              {/* 👤 Show username when logged in */}
+              <span className="font-medium">Hello, {user.name}</span>
+              {/* 🚪 Logout button */}
+              <Button
+                onClick={logout}
+                className="flex items-center gap-1 bg-transparent hover:text-yellow-300"
+              >
+                <User className="w-5 h-5" /> Logout
+              </Button>
+            </>
+          ) : (
+            /* 🔑 Show Login button when not logged in */
+            <Button className="flex items-center gap-1 bg-transparent hover:text-yellow-300">
+              <User className="w-5 h-5" /> <Link to="/login">Login</Link>
             </Button>
-          </Link>
-          <Link to="/login">
-            <Button variant="default">
-              <User className="h-4 w-4 mr-2" /> Login
-            </Button>
-          </Link>
+          )}
+
+          {/* 🛒 Cart is always visible */}
+          <Button className="flex items-center gap-1 bg-transparent hover:text-yellow-300">
+            <ShoppingCart className="w-5 h-5" /> <Link to="/cart">Cart</Link>
+          </Button>
         </div>
       </div>
-    </nav>
+    </header>
   );
-}
+};
 
 export default Navbar;

@@ -1,6 +1,6 @@
 import express from "express";
 import {registerUser,LoginUser} from "../controllers/UserController.js";
-import {body} from "express-validator";
+import {body} from "express-validator"
 const router = express.Router();
 
 router.post(

@@ -3,6 +3,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import connectToMongo from "./db.js";
 import authRoutes from "./Routes/auth.js";
+import productRoutes from "./routes/ProductRoutes.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -13,7 +14,8 @@ const MONGO_URI = process.env.MONGO_URI;
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use("/api/auth",authRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/products", productRoutes);
 
 app.get("/",(req,res)=>{
     res.send("API is running...");
