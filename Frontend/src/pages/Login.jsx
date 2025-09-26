@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -14,7 +16,20 @@ export default function Login() {
     e.preventDefault();
     try {
       const res = await axios.post("http://localhost:5000/api/auth/login", form);
+      
+      // Store token
       localStorage.setItem("token", res.data.token);
+      
+      // Fetch user data
+      const userResponse = await axios.get("http://localhost:5000/api/auth/me", {
+        headers: {
+          Authorization: `Bearer ${res.data.token}`
+        }
+      });
+      
+      // Update context with user data
+      login(userResponse.data.user);
+      
       alert("Welcome! You are now logged in.");
       navigate("/");
     } catch (err) {
